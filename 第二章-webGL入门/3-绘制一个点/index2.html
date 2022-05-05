@@ -6,24 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-
-<body onload="main()">
-
-    <canvas id="example" width="400" height="400"></canvas>
     <script src="../../lib/cuon-utils.js"></script>
     <script src="../../lib/webgl-debug.js"></script>
     <script src="../../lib/webgl-utils.js"></script>
+</head>
 
+<body onload="main()">
+    <canvas id="example" width="400" height="400"></canvas>
+    <!-- 使用attribute 、 uniform变量 -->
     <script>
-        // 顶点着色器程序
-        var vshader =
+        var vShader_source =
+            'attribute vec4 a_Position;' +
             'void main(){\n' +
-            'gl_Position = vec4(0.5,0.5,0.0,1.0);\n' +
+            'gl_Position = a_Position;\n' +
             'gl_PointSize = 10.0;\n' +
             '}\n'
-        // 片元着色器程序
-        var fshader =
+
+        var fShader_source =
             'void main(){\n' +
             'gl_FragColor = vec4(0.0,1.0,0,1.0);\n' +
             '}\n'
@@ -31,20 +30,18 @@
             var canvas = document.getElementById('example')
             var gl = getWebGLContext(canvas)
 
-            if (!gl) {
-                console.log(0);
-            }
-            if (!initShaders(gl, vshader, fshader)) {
+            console.log(gl);
+
+            if (!initShaders(gl, vShader_source, fShader_source)) {
                 console.log(00);
-
             }
-            gl.clearColor(0, 0, 0, 1)
-            gl.clear(gl.COLOR_BUFFER_BIT)
 
-            gl.drawArrays(gl.POINTS, 0, 1)
+            // 获取attribute变量的存储位置
+            var a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+            console.log(a_Position);
+
         }
     </script>
-
 </body>
 
 </html>
